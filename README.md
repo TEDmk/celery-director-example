@@ -16,6 +16,10 @@ cd celery-director-example
 ```bash
 docker-compose build --no-cache
 ```
+- Set the `DB_PASSWORD` variable
+```
+export DB_PASSWORD=helloyou
+```
 - Create the stack
 ```bash
 docker-compose up -d --force-recreate
