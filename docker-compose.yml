@@ -18,6 +18,11 @@ services:
       - database
     environment:
       - "DB_PASSWORD=${DB_PASSWORD}"
+  flower:
+    build: .
+    command: director celery flower
+    ports:
+      - 5555:5555
   db_upgrade:
     command: director db upgrade
     build: .
