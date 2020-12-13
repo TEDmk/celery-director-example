@@ -1,0 +1,1 @@
+celery-director~=0.3.1

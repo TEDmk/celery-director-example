@@ -1,0 +1,39 @@
+version: '3'
+services:
+  worker:
+    command: director celery worker --loglevel=INFO -B
+    build: .
+    links:
+      - redis
+      - database
+    environment:
+      - "DB_PASSWORD=${DB_PASSWORD}"
+  webserver:
+    command: director webserver  -b 0.0.0.0:8000
+    build: .
+    ports:
+      - "8000:8000"
+    links:
+      - redis
+      - database
+    environment:
+      - "DB_PASSWORD=${DB_PASSWORD}"
+  db_upgrade:
+    command: director db upgrade
+    build: .
+    links:
+      - database
+    environment:
+      - "DB_PASSWORD=${DB_PASSWORD}"
+  redis:
+    image: "redis:alpine"
+  database:
+    image: "postgres"
+    environment:
+      - POSTGRES_USER=admin
+      - POSTGRES_PASSWORD=${DB_PASSWORD}
+      - POSTGRES_DB=director
+    volumes:
+      - database-data:/var/lib/postgresql/data/
+volumes:
+  database-data:
